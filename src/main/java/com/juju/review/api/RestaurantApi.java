@@ -1,44 +1,54 @@
 package com.juju.review.api;
 
 import com.juju.review.api.request.CreateAndEditRestaurantRequest;
+import com.juju.review.api.response.RestaurantDetailView;
+import com.juju.review.api.response.RestaurantView;
+import com.juju.review.model.RestaurantEntity;
+import com.juju.review.service.RestaurantService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
+import java.util.List;
+
+@RequiredArgsConstructor
 @RestController
 public class RestaurantApi {
 
+    private final RestaurantService restaurantService;
+
     @GetMapping("/restaurants")
-    public String getRestaurants() {
-        return "This is getRestaurants";
+    public List<RestaurantView> getRestaurants() {
+        return restaurantService.getAllRestaurants();
     }
 
     @GetMapping("/restaurant/{restaurantId}")
-    public String getRestaurant(
+    public RestaurantDetailView getRestaurant(
             @PathVariable Long restaurantId
     ) {
-        return "This is getRestaurant " + restaurantId;
+        return restaurantService.getRestaurantDetail(restaurantId);
     }
 
     @PostMapping("/restaurant")
-    public String createRestaurant(
+    public void createRestaurant(
             @RequestBody CreateAndEditRestaurantRequest request
             ) {
-        return "This is createRestaurant, name=" + request.getName() + ", address=" + request.getAddress()
-                + ", menu[0].name = " + request.getMenus().get(0).getName() + ", menu[0].price = " + request.getMenus().get(0).getPrice();
+        restaurantService.createRestaurant(request);
     }
 
     @PutMapping("/restaurant/{restaurantId}")
-    public String editRestaurant(
+    public void editRestaurant(
             @PathVariable Long restaurantId,
             @RequestBody CreateAndEditRestaurantRequest request
     ) {
-        return "This is editRestaurant " + restaurantId +  ", name=" + request.getName() + ", address=" + request.getAddress();
+        restaurantService.editRestaurant(restaurantId, request);
     }
 
     @DeleteMapping("/restaurant/{restaurantId}")
-    public String deleteRestaurant(
+    public void deleteRestaurant(
             @PathVariable Long restaurantId
     ) {
-        return "This is deleteRestaurant " + restaurantId;
+        restaurantService.deleteRestaurant(restaurantId);
     }
 
 }
