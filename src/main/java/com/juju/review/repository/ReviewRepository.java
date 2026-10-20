@@ -3,6 +3,6 @@ package com.juju.review.repository;
 import com.juju.review.model.ReviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
+public interface ReviewRepository extends JpaRepository<ReviewEntity, Long>, ReviewRepositoryCustom {
 
 }
